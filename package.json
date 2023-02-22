@@ -37,6 +37,7 @@
 		"classnames": "^2.3.2",
 		"flowbite": "^1.6.3",
 		"flowbite-svelte": "^0.30.4",
+		"popper.js": "^1.16.1",
 		"svelte-carousel": "^1.0.23",
 		"sveltestrap": "^5.10.0"
 	}
