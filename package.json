@@ -15,6 +15,8 @@
 		"@fontsource/fira-mono": "^4.5.10",
 		"@neoconfetti/svelte": "^1.0.0",
 		"@playwright/test": "^1.28.1",
+		"@rollup/plugin-commonjs": "^24.0.1",
+		"@rollup/plugin-node-resolve": "^15.0.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.5.0",
 		"@types/cookie": "^0.5.1",
@@ -33,11 +35,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@popperjs/core": "^2.11.6",
 		"classnames": "^2.3.2",
-		"flowbite": "^1.6.3",
-		"flowbite-svelte": "^0.30.4",
-		"popper.js": "^1.16.1",
+		"@popperjs/core": "^2.11.6",
 		"svelte-carousel": "^1.0.23",
 		"sveltestrap": "^5.10.0"
 	}

@@ -25,7 +25,7 @@
     async function fetchData() {
       images = []
       loaded = false
-      const response = await fetch(`https://www.reddit.com/r/unixporn/search.json?q=` + selectedDEValue + `&restrict_sr=on&include_over_18=on&sort=relevance&t=all`);
+      const response = await fetch(`https://www.reddit.com/r/unixporn/search.json?q=` + selectedDEValue + `&restrict_sr=on&include_over_18=on&sort=relevance&t=all&limit=500`);
       const jsonResponse = await response.json();
       let childrenList = jsonResponse["data"]["children"]
       for (let i = 0; i < childrenList.length; i++) {
@@ -68,10 +68,10 @@
 </div>
 
   {#if loaded}
-  <Carousel {images} bind:activeIndex>
+  <Carousel class="pt-7" {images} bind:activeIndex>
     <div class="carousel-inner">
       {#each images as item, index}
-        <CarouselItem bind:activeIndex itemIndex={index}>
+        <CarouselItem class="space-x-4" bind:activeIndex itemIndex={index}>
           <img src={item.imageurl} class="d-block w-100" alt={`${item.title} ${index + 1}`} />
 		  <a href={item.href}>Reddit Link</a>
         </CarouselItem>

@@ -8,5 +8,7 @@ declare global {
 		// interface Platform {}
 	}
 }
+import { createPopper } from '@popperjs/core';
+import pkg from '@popperjs/core/dist/esm/popper.js';
 
 export {};
