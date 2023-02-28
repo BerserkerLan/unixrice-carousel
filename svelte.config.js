@@ -15,7 +15,7 @@ const config = {
 
 	kit: {
 		adapter: adapter(),
-		outDir: 'docs'
+		outDir: '/'
 	}
 };
 
