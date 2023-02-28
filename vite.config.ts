@@ -13,7 +13,6 @@ export default defineConfig({
         }
       }
     },
-    outDir: '/'
   },
   ssr: {
     noExternal: ['@popperjs/core']

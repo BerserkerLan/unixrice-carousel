@@ -14,8 +14,7 @@ const config = {
 	],
 
 	kit: {
-		adapter: adapter(),
-		outDir: '/'
+		adapter: adapter()
 	}
 };
 
