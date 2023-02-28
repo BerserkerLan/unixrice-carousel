@@ -12,7 +12,8 @@ export default defineConfig({
           'popper.js': 'Popper'
         }
       }
-    }
+    },
+    outDir: 'docs'
   },
   ssr: {
     noExternal: ['@popperjs/core']
