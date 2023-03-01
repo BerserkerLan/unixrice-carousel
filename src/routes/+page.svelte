@@ -28,6 +28,10 @@
       const jsonResponse = await response.json();
       let childrenList = jsonResponse["data"]["children"]
       for (let i = 0; i < childrenList.length; i++) {
+        let imageURL = childrenList[i]["data"]["url_overridden_by_dest"]
+        if (imageURL == undefined) {
+          continue
+        }
         let carouselItem = {
           id: i,
           name: childrenList[i]["data"]["title"],
