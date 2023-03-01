@@ -10,21 +10,28 @@
     DropdownToggle
   } from 'sveltestrap';
 
-    let open = false;
+    let openDE = false;
+    let openSort = false;
     let selectedDEValue = 'GNOME'
+    let selectedSortValue = 'relevance'
     let loaded = false;
     export var images: any[] = []
     let activeIndex = 0;
 
     function handleDESelect(value) {
       selectedDEValue = value;
-      open = false;
+      openDE = false;
+    }
+
+    function handleSortSelect(value) {
+      selectedSortValue = value;
+      openSort = true;
     }
   
     async function fetchData() {
       images = []
       loaded = false
-      const response = await fetch(`https://www.reddit.com/r/unixporn/search.json?q=` + selectedDEValue + `&restrict_sr=on&include_over_18=on&sort=relevance&t=all&limit=500`);
+      const response = await fetch(`https://www.reddit.com/r/unixporn/search.json?q=` + selectedDEValue + `&restrict_sr=on&include_over_18=on&sort=` + selectedSortValue + `&t=all&limit=500`);
       const jsonResponse = await response.json();
       let childrenList = jsonResponse["data"]["children"]
       for (let i = 0; i < childrenList.length; i++) {
@@ -52,8 +59,8 @@
 
   <div class="flex justify-center">
     <Dropdown class="pr-6">
-      <DropdownToggle on:click={() => open = !open}>{selectedDEValue}</DropdownToggle>
-      <DropdownMenu bind:open={open}>
+      <DropdownToggle on:click={() => openDE = !openDE}>{selectedDEValue}</DropdownToggle>
+      <DropdownMenu bind:open={openDE}>
         <DropdownItem on:click={() => handleDESelect('GNOME')}>
           GNOME
         </DropdownItem>
@@ -62,6 +69,24 @@
         </DropdownItem>
         <DropdownItem  on:click={() => handleDESelect('i3')}>
           i3
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+
+    <Dropdown class="pr-6">
+      <DropdownToggle on:click={() => openSort = !openSort}>{selectedSortValue}</DropdownToggle>
+      <DropdownMenu bind:open={openSort}>
+        <DropdownItem on:click={() => handleSortSelect('relevance')}>
+          relevance
+        </DropdownItem>
+        <DropdownItem on:click={() => handleSortSelect('hot')}>
+          hot
+        </DropdownItem>
+        <DropdownItem  on:click={() => handleSortSelect('top')}>
+          top
+        </DropdownItem>
+        <DropdownItem  on:click={() => handleSortSelect('new')}>
+          new
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
