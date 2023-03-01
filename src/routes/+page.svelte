@@ -35,8 +35,9 @@
       const jsonResponse = await response.json();
       let childrenList = jsonResponse["data"]["children"]
       for (let i = 0; i < childrenList.length; i++) {
+        console.log("event: " + childrenList[i])
         let imageURL = childrenList[i]["data"]["url_overridden_by_dest"]
-        if (imageURL == undefined) {
+        if (imageURL.includes('v.redd.it') || imageURL.includes('youtu.be')) {
           continue
         }
         let carouselItem = {
@@ -96,18 +97,22 @@
 </div>
 
   {#if loaded}
-  <Carousel class="pt-7" {images} bind:activeIndex>
-    <div class="carousel-inner">
+  <Carousel class="pt-7" {images} bind:activeIndex data-interval="false">
+    <div class="carousel-inner" data-interval="false">
       {#each images as item, index}
-        <CarouselItem class="space-x-4" bind:activeIndex itemIndex={index}>
-          <img src={item.imageurl} class="d-block w-100" alt={`${item.title} ${index + 1}`} />
-		  <a href={item.href}>Reddit Link</a>
+        <CarouselItem class="relative space-x-4" bind:activeIndex itemIndex={index} data-interval="false">
+          <div class="relative">
+            <img src={item.imageurl} class="d-block w-100" alt={`${item.title} ${index + 1}`} />
+          </div>
+          <div class="relative">
+            <a class="z-40" href={item.href} color='success'>Reddit Link</a>
+          </div>
         </CarouselItem>
       {/each}
     </div>
   
-    <CarouselControl direction="prev" bind:activeIndex {images} />
-    <CarouselControl direction="next" bind:activeIndex {images} />
+    <!-- <CarouselControl direction="prev" bind:activeIndex {images} data-interval="false"/>
+    <CarouselControl direction="next" bind:activeIndex {images}data-interval="false" /> -->
   </Carousel>
 {/if}  
 
