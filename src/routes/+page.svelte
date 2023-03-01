@@ -3,7 +3,6 @@
     import { _carouselItems } from './+page';
     import { Carousel, CarouselControl, CarouselItem } from 'sveltestrap';
     import {
-    ButtonDropdown,
     DropdownItem,
     DropdownMenu,
     Button,
@@ -81,8 +80,8 @@
     <CarouselControl direction="prev" bind:activeIndex {images} />
     <CarouselControl direction="next" bind:activeIndex {images} />
   </Carousel>
-{/if}
-  
+{/if}  
+
 
 
   
