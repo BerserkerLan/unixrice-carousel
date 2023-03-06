@@ -1,7 +1,7 @@
 <!-- page.svelte -->
 <script lang="ts">
     import { _carouselItems } from './+page';
-    import { Carousel, CarouselControl, CarouselItem } from 'sveltestrap';
+    import { ButtonGroup, Carousel, CarouselControl, CarouselItem } from 'sveltestrap';
     import {
     DropdownItem,
     DropdownMenu,
@@ -14,9 +14,18 @@
     let openSort = false;
     let selectedDEValue = 'GNOME'
     let selectedSortValue = 'relevance'
+    let imageQualityValue = 'HQ'
     let loaded = false;
     export var images: any[] = []
     let activeIndex = 0;
+
+    function handleHighQualityButton() {
+      imageQualityValue = 'HQ'
+    }
+
+    function handleLowQualityButton() {
+      imageQualityValue = 'LQ'
+    }
 
     function handleDESelect(value) {
       selectedDEValue = value;
@@ -44,7 +53,8 @@
           id: i,
           name: childrenList[i]["data"]["title"],
           imageurl: childrenList[i]["data"]["url_overridden_by_dest"],
-          href: "http://www.reddit.com" + childrenList[i]["data"]["permalink"]
+          href: "http://www.reddit.com" + childrenList[i]["data"]["permalink"],
+          lqimageurl: childrenList[i]["data"]["thumnbail"]
         }
         images.push(carouselItem)
       }
@@ -92,6 +102,11 @@
       </DropdownMenu>
     </Dropdown>
 
+    <ButtonGroup>
+      <Button active on:click={handleHighQualityButton}>HQ Images</Button>
+      <Button on:click={handleLowQualityButton}>LQ Images</Button>
+    </ButtonGroup>
+
 
     <Button on:click={fetchData} color='success'>Search</Button>
 </div>
@@ -102,7 +117,12 @@
       {#each images as item, index}
         <CarouselItem class="relative space-x-4" bind:activeIndex itemIndex={index} data-interval="false">
           <div class="relative">
-            <img src={item.imageurl} class="d-block w-100" alt={`${item.title} ${index + 1}`} />
+            {#if imageQualityValue == 'HQ'}
+              <img src={item.imageurl} class="d-block w-100" alt={`${item.title} ${index + 1}`} />
+            {/if}
+            {#if imageQualityValue == 'LQ'}
+              <img src={item.lqimageurl} class="d-block w-100" alt={`${item.title} ${index + 1}`} />
+            {/if}
           </div>
           <div class="relative">
             <a class="z-40" href={item.href} color='success'>Reddit Link</a>
