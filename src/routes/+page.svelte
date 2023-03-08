@@ -1,7 +1,7 @@
 <!-- page.svelte -->
 <script lang="ts">
     import { _carouselItems } from './+page';
-    import { ButtonGroup, Carousel, CarouselControl, CarouselItem } from 'sveltestrap';
+    import { ButtonGroup} from 'sveltestrap';
     import {
     DropdownItem,
     DropdownMenu,
@@ -9,6 +9,7 @@
     Dropdown,
     DropdownToggle
   } from 'sveltestrap';
+  import {Icon} from 'sveltestrap'
 
     let openDE = false;
     let openSort = false;
@@ -16,8 +17,34 @@
     let selectedSortValue = 'relevance'
     let imageQualityValue = 'HQ'
     let loaded = false;
+    let currentImageIndex = 0;
     export var images: any[] = []
     let activeIndex = 0;
+
+    function increaseImageIndex() {
+      if (currentImageIndex < images.length) {
+        currentImageIndex++
+      }
+    }
+
+    function decreaseImageIndex() {
+      if (currentImageIndex >= 0) {
+        currentImageIndex--
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === "ArrowUp") {
+      // Do something when up arrow is pressed
+      } else if (event.key === "ArrowDown") {
+        // Do something when down arrow is pressed
+      } else if (event.key === "ArrowLeft") {
+        decreaseImageIndex()
+
+      } else if (event.key === "ArrowRight") {
+        increaseImageIndex()
+      }
+    }
 
     function handleHighQualityButton() {
       imageQualityValue = 'HQ'
@@ -44,7 +71,7 @@
       const jsonResponse = await response.json();
       let childrenList = jsonResponse["data"]["children"]
       for (let i = 0; i < childrenList.length; i++) {
-        console.log("event: " + childrenList[i])
+        console.log("event: " + JSON.stringify(childrenList[i]))
         let imageURL = childrenList[i]["data"]["url_overridden_by_dest"]
         if (imageURL.includes('v.redd.it') || imageURL.includes('youtu.be')) {
           continue
@@ -54,7 +81,7 @@
           name: childrenList[i]["data"]["title"],
           imageurl: childrenList[i]["data"]["url_overridden_by_dest"],
           href: "http://www.reddit.com" + childrenList[i]["data"]["permalink"],
-          lqimageurl: childrenList[i]["data"]["thumnbail"]
+          lqimageurl: childrenList[i]["data"]["thumbnail"]
         }
         images.push(carouselItem)
       }
@@ -67,6 +94,9 @@
 <svelte:head>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
 </svelte:head>
+
+<svelte:window
+  on:keydown={handleKeyDown}/>
 
   <div class="flex justify-center">
     <Dropdown class="pr-6">
@@ -102,20 +132,30 @@
       </DropdownMenu>
     </Dropdown>
 
-    <ButtonGroup>
+    <!-- <ButtonGroup>
       <Button active on:click={handleHighQualityButton}>HQ Images</Button>
       <Button on:click={handleLowQualityButton}>LQ Images</Button>
-    </ButtonGroup>
+    </ButtonGroup> -->
 
 
     <Button on:click={fetchData} color='success'>Search</Button>
 </div>
 
   {#if loaded}
-  <Carousel class="pt-7" {images} bind:activeIndex data-interval="false">
-    <div class="carousel-inner" data-interval="false">
+  <i class="fa-solid fa-arrow-left"></i>
+      {#if imageQualityValue == 'HQ'}
+        <img src={images[currentImageIndex].imageurl} class="d-block w-100" alt={`${images[currentImageIndex].title} ${currentImageIndex + 1}`} />
+      {/if}
+      {#if imageQualityValue == 'LQ'}
+        <img src={images[currentImageIndex].lqimageurl} class="d-block w-100" alt={`${images[currentImageIndex].title} ${currentImageIndex + 1}`} />
+      {/if}
+      <div class="relative">
+        <a class="z-40" href={images[currentImageIndex].href} color='success'>Reddit Link</a>
+      </div>
+  <!-- <Carousel class="pt-7" {images} bind:activeIndex interval={-1}>
+    <div class="carousel-inner">
       {#each images as item, index}
-        <CarouselItem class="relative space-x-4" bind:activeIndex itemIndex={index} data-interval="false">
+        <CarouselItem class="relative space-x-4" bind:activeIndex itemIndex={index}>
           <div class="relative">
             {#if imageQualityValue == 'HQ'}
               <img src={item.imageurl} class="d-block w-100" alt={`${item.title} ${index + 1}`} />
@@ -131,9 +171,7 @@
       {/each}
     </div>
   
-    <!-- <CarouselControl direction="prev" bind:activeIndex {images} data-interval="false"/>
-    <CarouselControl direction="next" bind:activeIndex {images}data-interval="false" /> -->
-  </Carousel>
+  </Carousel> -->
 {/if}  
 
 
